@@ -62,34 +62,28 @@ class Bench(object):
     def sys_container_dev(self, dev, container):
             return dev
 
-    def get_dev_size(self, dev):
-        devname = dev.strip('/dev/')
-
-        with open('/sys/block/%s/size' % devname, 'r') as f:
+    def get_dev_size(self):
+        with open(f"{self.output}/size", 'r') as f:
             dev_size = int(f.readline())
 
         # Reported in 512B
         return (dev_size / 2)
 
-    def get_number_of_zones(self, dev):
-        devname = dev.strip('/dev/')
+    def get_number_of_zones(self):
         nr_zones = 0
-        with open(f"/sys/class/block/{devname}/queue/nr_zones", 'r') as f:
+        with open(f"{self.output}/nr_zones", 'r') as f:
             nr_zones = int(f.readline())
         return nr_zones
 
-    def get_zone_size_mb(self, dev):
-        devname = dev.strip('/dev/')
+    def get_zone_size_mb(self):
         zonesize = 0
 
-        with open('/sys/block/%s/queue/chunk_sectors' % devname, 'r') as f:
+        with open(f"{self.output}/chunk_sectors", 'r') as f:
             zonesize = int(((int(f.readline()) * 512) / 1024) / 1024)
 
         return zonesize
 
-    def get_zone_capacity_mb(self, dev):
-        devname = dev.strip('/dev/')
-
+    def get_zone_capacity_mb(self):
         with open(f'{self.output}/blkzone-report.txt', 'r') as f:
             capacity_blocks = int(f.readline().split()[5].strip(','), 0)
             capacity_bytes = capacity_blocks * 512

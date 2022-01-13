@@ -119,7 +119,7 @@ class Run(Bench):
         if is_dev_zoned(dev):
             # Zone Capacity (52% of zone size)
             zonecap=52
-            zonesize=self.get_zone_size_mb(dev)
+            zonesize=self.get_zone_size_mb()
         else:
             print("This test is ment to be run on a zoned dev")
             sys.exit(1)
@@ -127,7 +127,7 @@ class Run(Bench):
         #write/read 2 zones for this benchmark
         size = zonesize * 2
         runs = 2
-        max_size = int(((self.get_dev_size(dev) * zonecap) / 100) * 2)
+        max_size = int(((self.get_dev_size() * zonecap) / 100) * 2)
         if max_size < size:
             size = max_size
         io_size = size

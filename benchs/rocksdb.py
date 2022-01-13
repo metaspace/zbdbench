@@ -48,7 +48,7 @@ class RocksDBBase(Bench):
         }
 
     def get_target_fz_base(self, dev):
-        zonecap = self.get_zone_capacity_mb(dev)
+        zonecap = self.get_zone_capacity_mb()
         return str(int(zonecap * 95 / 100) * 1024 * 1024)
 
     def get_run_string(self, dev, bench_params, name=jobname):

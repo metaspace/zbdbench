@@ -34,7 +34,7 @@ class Run(Bench):
             zonecap=100
             extra = '--zonesize=1102848k'
 
-        io_size = int(((self.get_dev_size(dev) * zonecap) / 100) * self.loops)
+        io_size = int(((self.get_dev_size() * zonecap) / 100) * self.loops)
 
         fio_param = (f"--filename={dev}"
                     f" --io_size={io_size}k"

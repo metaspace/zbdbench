@@ -92,11 +92,15 @@ def create_dirs(run_output):
         sys.exit(1)
 
 def collect_info(dev, run_output):
+    devname = dev.strip('/dev/')
     subprocess.check_call(f"lsblk -b {dev} > {run_output}/lsblk-capacity.txt", shell=True)
 
     if is_dev_zoned(dev):
         subprocess.check_call(f"blkzone capacity {dev} > {run_output}/blkzone-capacity.txt", shell=True)
         subprocess.check_call(f"blkzone report {dev} > {run_output}/blkzone-report.txt", shell=True)
+        subprocess.check_call(f"cat /sys/block/{devname}/queue/chunk_sectors > {run_output}/chunk_sectors", shell=True)
+        subprocess.check_call(f"cat /sys/class/block/{devname}/queue/nr_zones > {run_output}/nr_zones", shell=True)
+        subprocess.check_call(f"cat /sys/block/{devname}/size > {run_output}/size", shell=True)
 
 def list_benchs(benches):
     print("\nBenchmarks:")

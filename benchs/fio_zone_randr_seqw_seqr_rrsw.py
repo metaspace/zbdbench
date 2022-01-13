@@ -27,17 +27,17 @@ class Run(Bench):
         if is_dev_zoned(dev):
             # Zone Capacity (52% of zone size)
             zonecap=52
-            io_size = int(((self.get_zone_capacity_mb(dev) * self.get_number_of_zones(dev) * 1024 * 1024) * 3))
+            io_size = int(((self.get_zone_capacity_mb() * self.get_number_of_zones() * 1024 * 1024) * 3))
         else:
             # Zone Size = Zone Capacity on a conv. drive
             zonecap=100
             extra = '--zonesize=1102848k'
-            io_size = int(((self.get_dev_size(dev) * zonecap) / 100) * 3)
+            io_size = int(((self.get_dev_size() * zonecap) / 100) * 3)
         # Get correct offset to avoid rounding up/down msg from fio, which causes parsing issues
-        offset1 = int(int(self.get_number_of_zones(dev) / 4) * 0 * self.get_zone_size_mb(dev))
-        offset2 = int(int(self.get_number_of_zones(dev) / 4) * 1 * self.get_zone_size_mb(dev))
-        offset3 = int(int(self.get_number_of_zones(dev) / 4) * 2 * self.get_zone_size_mb(dev))
-        offset4 = int(int(self.get_number_of_zones(dev) / 4) * 3 * self.get_zone_size_mb(dev))
+        offset1 = int(int(self.get_number_of_zones() / 4) * 0 * self.get_zone_size_mb())
+        offset2 = int(int(self.get_number_of_zones() / 4) * 1 * self.get_zone_size_mb())
+        offset3 = int(int(self.get_number_of_zones() / 4) * 2 * self.get_zone_size_mb())
+        offset4 = int(int(self.get_number_of_zones() / 4) * 3 * self.get_zone_size_mb())
 
         init_param = ("--ioengine=io_uring --direct=1 --zonemode=zbd"
                     " --output-format=json"

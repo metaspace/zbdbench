@@ -32,7 +32,7 @@ class Run(Bench):
             zonecap=100
             extra = '--zonesize=1102848k'
 
-        io_size = int(((self.get_dev_size(dev) * zonecap) / 100) * 2)
+        io_size = int(((self.get_dev_size() * zonecap) / 100) * 2)
 
         init_param = ("--ioengine=io_uring --direct=1 --zonemode=zbd"
                     " --output-format=json"
