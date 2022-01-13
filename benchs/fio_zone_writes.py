@@ -15,7 +15,7 @@ class Run(Bench):
         return self.jobname
 
     def setup(self, dev, container, output):
-        super(Run, self).setup(output)
+        super().setup(output)
 
         self.discard_dev(dev)
 
@@ -36,14 +36,18 @@ class Run(Bench):
 
         io_size = int(((self.get_dev_size(dev) * zonecap) / 100) * self.loops)
 
-        fio_param = ("--filename=%s"
-                    " --io_size=%sk"
+        fio_param = (f"--filename={dev}"
+                    f" --io_size={io_size}k"
                     " --log_avg_msec=1000"
-                    " --write_bw_log=output/fio_zone_write"
-                    " --output=output/fio_zone_write.log"
-                    " --ioengine=libaio --direct=1 --zonemode=zbd"
-                    " --name=seqwriter --rw=randwrite"
-                    " --bs=64k --max_open_zones=%s %s") % (dev, io_size, max_open_zones, extra)
+                    f" --write_bw_log={self.output}/fio_zone_write"
+                    f" --output={self.output}/fio_zone_write.log"
+                    " --ioengine=libaio"
+                    " --direct=1"
+                    " --zonemode=zbd"
+                    " --name=seqwriter"
+                    " --rw=randwrite"
+                    " --bs=64k"
+                    f" --max_open_zones={max_open_zones} {extra}")
 
         self.run_cmd(dev, container, 'fio', fio_param)
 
